@@ -42,6 +42,10 @@ public:
 			ApplyDamageTo(other, mPower + Roll(2));
 		}
 	}
+	virtual void SpecialMove(MemeFighter&)
+	{
+		std::cout << "You will never get this!" << std::endl;
+	}
 	void Tick()
 	{
 		if (IsAlive())
@@ -86,7 +90,7 @@ public:
 	MemeFrog(const std::string& name)
 		: MemeFighter(name, 69, 7, 14)
 	{}
-	void SpecialMove(MemeFighter& other) const
+	void SpecialMove(MemeFighter& other) override
 	{
 		if (IsAlive() && other.IsAlive())
 		{
@@ -116,7 +120,7 @@ public:
 	MemeStoner(const std::string& name)
 		: MemeFighter(name, 80, 4, 10)
 	{}
-	void SpecialMove()
+	void SpecialMove(MemeFighter&) override
 	{
 		if (IsAlive())
 		{
@@ -146,6 +150,18 @@ void Engage(MemeFighter& f1, MemeFighter& f2)
 	p2->Punch(*p1);
 }
 
+void DoSpecials(MemeFighter& f1, MemeFighter& f2)
+{
+	MemeFighter* p1 = &f1;
+	MemeFighter* p2 = &f2;
+
+	if (p1->GetInitiative() < p2->GetInitiative())
+		std::swap(p1, p2);
+
+	p1->SpecialMove(*p2);
+	p2->SpecialMove(*p1);
+}
+
 int main()
 {
 	MemeFrog f1("Dat Boi");
@@ -155,9 +171,7 @@ int main()
 	while (f1.IsAlive() && f2.IsAlive())
 	{
 		Engage(f1, f2);
-
-		f2.SpecialMove();
-		f1.SpecialMove(f2);
+		DoSpecials(f1, f2);
 
 		f1.Tick();
 		f2.Tick();
