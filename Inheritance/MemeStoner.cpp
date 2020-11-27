@@ -14,9 +14,9 @@ void MemeStoner::SpecialMove(MemeFighter&)
 		{
 			std::cout << mName << " smokes the dank sticky icky, becoming Super " << mName << std::endl;
 			mName = "Super " + mName;
-			mSpeed += 3;
-			mPower = (mPower * 69) / 42;
-			mHp += 10;
+			mAttributes.Speed += 3;
+			mAttributes.Power = (mAttributes.Power * 69) / 42;
+			mAttributes.Hp += 10;
 		}
 		else
 			std::cout << mName << " spaces out." << std::endl;

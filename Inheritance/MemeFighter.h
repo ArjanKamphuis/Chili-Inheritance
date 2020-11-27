@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include "Attributes.h"
 #include "Dice.h"
 
 class MemeFighter
@@ -13,6 +14,7 @@ public:
 	virtual void SpecialMove(MemeFighter&) = 0;
 	virtual void Tick();
 	virtual ~MemeFighter() = default;
+	const Attributes& GetAttributes() const;
 
 protected:
 	MemeFighter(const std::string& name, int hp, int speed, int power);
@@ -20,9 +22,7 @@ protected:
 	int Roll(int nDice = 1) const;
 
 protected:
-	int mHp;
-	int mSpeed;
-	int mPower;
+	Attributes mAttributes;
 	std::string mName;
 
 private:

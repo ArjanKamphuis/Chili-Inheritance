@@ -146,6 +146,7 @@
     <ClCompile Include="MemeStoner.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Attributes.h" />
     <ClInclude Include="Dice.h" />
     <ClInclude Include="MemeFighter.h" />
     <ClInclude Include="MemeFrog.h" />
