@@ -48,7 +48,7 @@ public:
 		}
 	}
 	virtual void SpecialMove(MemeFighter&) = 0;
-	void Tick()
+	virtual void Tick()
 	{
 		if (IsAlive())
 		{
@@ -106,7 +106,7 @@ public:
 				std::cout << mName << " falls off his unicycle." << std::endl;
 		}
 	}
-	void Tick()
+	void Tick() override
 	{
 		if (IsAlive())
 		{
