@@ -1,117 +1,175 @@
+#include <conio.h>
 #include <iostream>
+#include <random>
 #include <string>
 
-class Smasher
+class Dice
 {
 public:
-	Smasher() = default;
-	Smasher(int hp, int str, const std::string& name)
-		: mHp(hp), mStr(str), mName(name)
-	{}
-	int GetStr() const
+	int Roll(int nDice)
 	{
-		return mStr;
+		int total = 0;
+		for (int n = 0; n < nDice; n++)
+			total += mD6(mRng);
+		return total;
 	}
-	int GetHP() const
-	{
-		return mHp;
-	}
+
+private:
+	std::uniform_int_distribution<int> mD6 = std::uniform_int_distribution<int>(1, 6);
+	std::mt19937 mRng = std::mt19937(std::random_device{}());
+};
+
+class MemeFighter
+{
+public:
 	const std::string& GetName() const
 	{
 		return mName;
 	}
-	void Smash(Smasher& target) const
+	int GetInitiative() const
 	{
-		if (target.IsDead())
-			std::cout << mName << " smashes " << target.GetName() << "'s dead body. Still dead.\n";
-		else
+		return mSpeed + Roll(2);
+	}
+	bool IsAlive() const
+	{
+		return mHp > 0;
+	}
+	void Punch(MemeFighter& other)
+	{
+		if (IsAlive() && other.IsAlive())
 		{
-			std::cout << mName << " smashes " << target.GetName() << ".\n";
-			target.TakeDamage(mStr);
+			std::cout << mName << " punches " << other.mName << "!" << std::endl;
+			ApplyDamageTo(other, mPower + Roll(2));
 		}
 	}
-	void TakeDamage(int damage)
+	void Tick()
 	{
-		std::cout << mName << " takes " << damage << " damage.\n";
-		mHp -= damage;
-
-		if (IsDead())
-			std::cout << mName << " dies.\n";
-	}
-	bool IsDead() const
-	{
-		return mHp <= 0;
+		if (IsAlive())
+		{
+			const int recovery = Roll();
+			std::cout << mName << " recovers " << recovery << " HP." << std::endl;
+			mHp += recovery;
+		}
 	}
 
 protected:
-	int mHp = 69;
-	int mStr = 1;
+	MemeFighter(const std::string& name, int hp, int speed, int power)
+		: mName(name), mHp(hp), mSpeed(speed), mPower(power)
+	{
+		std::cout << name << " enters the ring!" << std::endl;
+	}
+	void ApplyDamageTo(MemeFighter& target, int damage) const
+	{
+		target.mHp -= damage;
+		std::cout << target.mName << " takes " << damage << " damage." << std::endl;
+		if (!target.IsAlive())
+			std::cout << "As the life leaves " << target.mName << "'s body, so does the poop." << std::endl;
+	}
+	int Roll(int nDice = 1) const
+	{
+		return mDice.Roll(nDice);
+	}
+
+protected:
+	int mHp;
+	int mSpeed;
+	int mPower;
+	std::string mName;
 
 private:
-	std::string mName = "McDefault";
+	mutable Dice mDice;
 };
 
-class EliteSmasher : public Smasher
+class MemeFrog : public MemeFighter
 {
 public:
-	EliteSmasher(int hp, int str, const std::string& name)
-		: Smasher(hp, str, name)
+	MemeFrog(const std::string& name)
+		: MemeFighter(name, 69, 7, 14)
 	{}
-	void SuperSmash(Smasher& target)
+	void SpecialMove(MemeFighter& other) const
 	{
-		if (mSp >= 3)
+		if (IsAlive() && other.IsAlive())
 		{
-			if (target.IsDead())
-				std::cout << GetName() << " uses super smash on " << target.GetName() << "'s dead body. Still dead.\n";
-			else
+			if (Roll() > 4)
 			{
-				std::cout << GetName() << " uses super smash on " << target.GetName() << ".\n";
-				target.TakeDamage(GetStr() * 2);
+				std::cout << mName << " attacks " << other.GetName() << " with a rainbow beam!" << std::endl;
+				ApplyDamageTo(other, Roll(3) + 20);
 			}
-			mSp -= 3;
+			else
+				std::cout << mName << " falls off his unicycle." << std::endl;
 		}
-		else
-			std::cout << GetName() << " tried to use super smash on " << target.GetName() << ", but he didn't have enough goddamn sp.\n";
 	}
-	void Smash(Smasher& target)
+	void Tick()
 	{
-		Smasher::Smash(target);
-		std::cout << GetName() << " recovers 2 sp.\n";
-		mSp += 2;
-	}
-	void PepUp()
-	{
-		if (mSp >= 2)
+		if (IsAlive())
 		{
-			std::cout << GetName() << " uses Pep Up and gains 30 hp and 10 str. His bones is so huge.\n";
-			mHp += 30;
-			mStr += 10;
-			mSp -= 2;
+			std::cout << mName << " is hurt by the bad AIDS!" << std::endl;
+			ApplyDamageTo(*this, Roll());
+			MemeFighter::Tick();
 		}
-		else
-			std::cout << GetName() << " tried to use Pep Up but lacks sp. Tremendously flaccid.\n";
 	}
-
-private:
-	int mSp = 6;
 };
+
+class MemeStoner : public MemeFighter
+{
+public:
+	MemeStoner(const std::string& name)
+		: MemeFighter(name, 80, 4, 10)
+	{}
+	void SpecialMove()
+	{
+		if (IsAlive())
+		{
+			if (Roll() > 3)
+			{
+				std::cout << mName << " smokes the dank sticky icky, becoming Super " << mName << std::endl;
+				mName = "Super " + mName;
+				mSpeed += 3;
+				mPower = (mPower * 69) / 42;
+				mHp += 10;
+			}
+			else
+				std::cout << mName << " spaces out." << std::endl;
+		}
+	}
+};
+
+void Engage(MemeFighter& f1, MemeFighter& f2)
+{
+	MemeFighter* p1 = &f1;
+	MemeFighter* p2 = &f2;
+
+	if (p1->GetInitiative() < p2->GetInitiative())
+		std::swap(p1, p2);
+
+	p1->Punch(*p2);
+	p2->Punch(*p1);
+}
 
 int main()
 {
-	Smasher df(100, 30, "Dik Fuk");
-	EliteSmasher tb(110, 13, "Cunt Destroyer");
+	MemeFrog f1("Dat Boi");
+	MemeStoner f2("Good Guy Greg");
+	std::cout << std::endl;
 
-	df.Smash(tb);
+	while (f1.IsAlive() && f2.IsAlive())
+	{
+		Engage(f1, f2);
 
-	tb.PepUp();
-	tb.SuperSmash(df);
-	tb.SuperSmash(df);
-	tb.SuperSmash(df);
-	tb.Smash(df);
-	tb.Smash(df);
-	tb.SuperSmash(df);
-	tb.SuperSmash(df);
+		f2.SpecialMove();
+		f1.SpecialMove(f2);
 
-	std::cin.get();
+		f1.Tick();
+		f2.Tick();
+
+		std::cout << "Press any key to continue...";
+		while (!_kbhit());
+		int x = _getch();
+		std::cout << std::endl << std::endl;
+	}
+
+	std::cout << (f1.IsAlive() ? f1.GetName() : f2.GetName()) << " is victorious!";
+
+	while (!_kbhit());
 	return 0;
 }
