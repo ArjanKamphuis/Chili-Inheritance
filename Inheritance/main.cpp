@@ -42,10 +42,7 @@ public:
 			ApplyDamageTo(other, mPower + Roll(2));
 		}
 	}
-	virtual void SpecialMove(MemeFighter&)
-	{
-		std::cout << "You will never get this!" << std::endl;
-	}
+	virtual void SpecialMove(MemeFighter&) = 0;
 	void Tick()
 	{
 		if (IsAlive())
