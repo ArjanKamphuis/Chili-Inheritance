@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <conio.h>
 #include <iostream>
 #include <random>
@@ -159,19 +160,48 @@ void DoSpecials(MemeFighter& f1, MemeFighter& f2)
 	p2->SpecialMove(*p1);
 }
 
+template<typename T, class P>
+void shuffle_partition(std::vector<T>& vec, P pred)
+{
+	std::random_shuffle(vec.begin(), vec.end());
+	std::partition(vec.begin(), vec.end(), pred);
+}
+
 int main()
 {
 	MemeFrog f1("Dat Boi");
 	MemeStoner f2("Good Guy Greg");
+	MemeFrog f3("The WB Frog");
+
+	MemeStoner g1("Chong");
+	MemeStoner g2("Scumbag Steve");
+	MemeFrog g3("Pepe");
+
+	std::vector<MemeFighter*> t1 = { &f1, &f2, &f3 };
+	std::vector<MemeFighter*> t2 = { &g1, &g2, &g3 };
+
 	std::cout << std::endl;
 
-	while (f1.IsAlive() && f2.IsAlive())
+	const auto alive_pred = [](MemeFighter* pf) { return pf->IsAlive(); };
+	while (std::any_of(t1.begin(), t1.end(), alive_pred) && std::any_of(t2.begin(), t2.end(), alive_pred))
 	{
-		Engage(f1, f2);
-		DoSpecials(f1, f2);
+		shuffle_partition(t1, alive_pred);
+		shuffle_partition(t2, alive_pred);
 
-		f1.Tick();
-		f2.Tick();
+		for (size_t i = 0; i < t1.size(); i++)
+		{
+			Engage(*t1[i], *t2[i]);
+			DoSpecials(*t1[i], *t2[i]);
+			std::cout << "------------------------------------" << std::endl;
+		}
+		std::cout << "=====================================" << std::endl;
+
+		for (size_t i = 0; i < t1.size(); ++i)
+		{
+			t1[i]->Tick();
+			t2[i]->Tick();
+		}
+		std::cout << "=====================================" << std::endl;
 
 		std::cout << "Press any key to continue...";
 		while (!_kbhit());
@@ -179,7 +209,7 @@ int main()
 		std::cout << std::endl << std::endl;
 	}
 
-	std::cout << (f1.IsAlive() ? f1.GetName() : f2.GetName()) << " is victorious!";
+	std::cout << "TEAM " << (std::any_of(t1.begin(), t1.end(), alive_pred) ? "ONE" : "TWO") << " is victorious!";
 
 	while (!_kbhit());
 	return 0;
