@@ -57,6 +57,7 @@ public:
 			mHp += recovery;
 		}
 	}
+	virtual ~MemeFighter() = default;
 
 protected:
 	MemeFighter(const std::string& name, int hp, int speed, int power)
@@ -114,6 +115,10 @@ public:
 			MemeFighter::Tick();
 		}
 	}
+	~MemeFrog()
+	{
+		std::cout << "Destroying MemeFrog '" << mName << "'!" << std::endl;
+	}
 };
 
 class MemeStoner : public MemeFighter
@@ -137,6 +142,10 @@ public:
 			else
 				std::cout << mName << " spaces out." << std::endl;
 		}
+	}
+	~MemeStoner()
+	{
+		std::cout << "Destroying MemeStoner '" << mName << "'!" << std::endl;
 	}
 };
 
@@ -217,7 +226,7 @@ int main()
 		std::cout << std::endl << std::endl;
 	}
 
-	std::cout << "TEAM " << (std::any_of(t1.begin(), t1.end(), alive_pred) ? "ONE" : "TWO") << " is victorious!";
+	std::cout << "TEAM " << (std::any_of(t1.begin(), t1.end(), alive_pred) ? "ONE" : "TWO") << " is victorious!" << std::endl;
 
 	for (size_t i = 0; i < t1.size(); ++i)
 	{
