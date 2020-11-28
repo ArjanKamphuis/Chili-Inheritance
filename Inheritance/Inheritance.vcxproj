@@ -141,16 +141,14 @@
   <ItemGroup>
     <ClCompile Include="Dice.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MemeFighter.cpp" />
-    <ClCompile Include="MemeFrog.cpp" />
-    <ClCompile Include="MemeStoner.cpp" />
+    <ClCompile Include="Fighters.cpp" />
+    <ClCompile Include="Weapons.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Attributes.h" />
     <ClInclude Include="Dice.h" />
-    <ClInclude Include="MemeFighter.h" />
-    <ClInclude Include="MemeFrog.h" />
-    <ClInclude Include="MemeStoner.h" />
+    <ClInclude Include="Fighters.h" />
+    <ClInclude Include="Weapons.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

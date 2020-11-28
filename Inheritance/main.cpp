@@ -2,9 +2,8 @@
 #include <conio.h>
 #include <iostream>
 
-#include "MemeFighter.h"
-#include "MemeFrog.h"
-#include "MemeStoner.h"
+#include "Fighters.h"
+#include "Weapons.h"
 
 #ifdef _DEBUG
 #include <crtdbg.h>
@@ -18,8 +17,8 @@ void Engage(MemeFighter& f1, MemeFighter& f2)
 	if (p1->GetInitiative() < p2->GetInitiative())
 		std::swap(p1, p2);
 
-	p1->Punch(*p2);
-	p2->Punch(*p1);
+	p1->Attack(*p2);
+	p2->Attack(*p1);
 }
 
 void DoSpecials(MemeFighter& f1, MemeFighter& f2)
@@ -48,17 +47,17 @@ int main()
 #endif
 
 	std::vector<MemeFighter*> t1 = {
-		new MemeFrog("Dat Boi"),
-		new MemeStoner("Good Guy Greg"),
-		new MemeFrog("The WB Frog")
+		new MemeFrog("Dat Boi", new Fists),
+		new MemeStoner("Good Guy Greg", new Bat),
+		new MemeFrog("The WB Frog", new Knife)
 	};
 	std::vector<MemeFighter*> t2 = {
-		new MemeStoner("Chong"),
-		new MemeStoner("Scumbag Steve"),
-		new MemeFrog("Pepe")
+		new MemeStoner("Chong", new Fists),
+		new MemeStoner("Scumbag Steve", new Bat),
+		new MemeFrog("Pepe", new Knife)
 	};
 
-	std::cout << std::endl;
+	std::cout << "=====================================" << std::endl;
 
 	const auto alive_pred = [](MemeFighter* pf) { return pf->IsAlive(); };
 	while (std::any_of(t1.begin(), t1.end(), alive_pred) && std::any_of(t2.begin(), t2.end(), alive_pred))
