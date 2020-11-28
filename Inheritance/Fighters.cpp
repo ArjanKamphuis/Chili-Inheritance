@@ -57,6 +57,16 @@ Weapon* MemeFighter::PilferWeapon()
 	return pWeapon;
 }
 
+bool MemeFighter::HasWeapon() const
+{
+	return mWeapon != nullptr;
+}
+
+const Weapon& MemeFighter::GetWeapon() const
+{
+	return *mWeapon;
+}
+
 MemeFighter::MemeFighter(const std::string& name, int hp, int speed, int power, Weapon* pWeapon)
 	: mName(name), mAttributes({ hp, speed, power}), mWeapon(pWeapon)
 {

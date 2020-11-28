@@ -20,6 +20,8 @@ public:
 
 	void GiveWeapon(Weapon* pNewWeapon);
 	Weapon* PilferWeapon();
+	bool HasWeapon() const;
+	const Weapon& GetWeapon() const;
 
 protected:
 	MemeFighter(const std::string& name, int hp, int speed, int power, Weapon* pWeapon = nullptr);

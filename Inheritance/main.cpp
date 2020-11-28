@@ -9,6 +9,16 @@
 #include <crtdbg.h>
 #endif
 
+void TakeWeaponIfDead(MemeFighter& taker, MemeFighter& giver)
+{
+	if (taker.IsAlive() && !giver.IsAlive() && giver.HasWeapon()
+		&& (giver.GetWeapon().GetRank() > taker.GetWeapon().GetRank()))
+	{
+		std::cout << taker.GetName() << " takes the " << giver.GetWeapon().GetName() << " from " << giver.GetName() << "'s still-cooling corpse." << std::endl;
+		taker.GiveWeapon(giver.PilferWeapon());
+	}
+}
+
 void Engage(MemeFighter& f1, MemeFighter& f2)
 {
 	MemeFighter* p1 = &f1;
@@ -18,7 +28,9 @@ void Engage(MemeFighter& f1, MemeFighter& f2)
 		std::swap(p1, p2);
 
 	p1->Attack(*p2);
+	TakeWeaponIfDead(*p1, *p2);
 	p2->Attack(*p1);
+	TakeWeaponIfDead(*p2, *p1);
 }
 
 void DoSpecials(MemeFighter& f1, MemeFighter& f2)
@@ -30,7 +42,9 @@ void DoSpecials(MemeFighter& f1, MemeFighter& f2)
 		std::swap(p1, p2);
 
 	p1->SpecialMove(*p2);
+	TakeWeaponIfDead(*p1, *p2);
 	p2->SpecialMove(*p1);
+	TakeWeaponIfDead(*p2, *p1);
 }
 
 template<typename T, class P>
