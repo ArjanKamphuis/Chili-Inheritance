@@ -1,10 +1,5 @@
 #include "Weapons.h"
 
-Weapon::Weapon(const std::string& name, int rank)
-	: mName(name), mRank(rank)
-{
-}
-
 const std::string& Weapon::GetName() const
 {
 	return mName;
@@ -13,6 +8,11 @@ const std::string& Weapon::GetName() const
 int Weapon::GetRank() const
 {
 	return mRank;
+}
+
+Weapon::Weapon(const std::string& name, int rank)
+	: mName(name), mRank(rank)
+{
 }
 
 Fists::Fists()

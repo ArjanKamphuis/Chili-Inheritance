@@ -48,7 +48,7 @@ void DoSpecials(MemeFighter& f1, MemeFighter& f2)
 }
 
 template<typename T, class P>
-void shuffle_partition(std::vector<T>& vec, P pred)
+void shuffle_partition(std::vector<T>& vec, const P& pred)
 {
 	std::random_shuffle(vec.begin(), vec.end());
 	std::partition(vec.begin(), vec.end(), pred);

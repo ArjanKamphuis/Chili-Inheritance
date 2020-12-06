@@ -7,12 +7,14 @@
 class Weapon
 {
 public:
-	Weapon(const std::string& name, int rank);
 	virtual ~Weapon() = default;
 
 	const std::string& GetName() const;
 	int GetRank() const;
 	virtual int CalculateDamage(const Attributes& attr, Dice& dice) const = 0;
+
+protected:
+	Weapon(const std::string& name, int rank);
 
 private:
 	std::string mName;
