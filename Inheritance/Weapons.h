@@ -9,8 +9,8 @@ class Weapon
 public:
 	virtual ~Weapon() = default;
 
-	const std::string& GetName() const;
-	int GetRank() const;
+	virtual const std::string& GetName() const;
+	virtual int GetRank() const;
 	virtual int CalculateDamage(const Attributes& attr, Dice& dice) const = 0;
 
 protected:
