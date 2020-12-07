@@ -90,12 +90,19 @@ MemeStoner::MemeStoner(const std::string& name, Weapon* pWeapon)
 	: MemeFighter(name, 80, 4, 10, pWeapon)
 {}
 
-void MemeStoner::SpecialMove(MemeFighter&)
+void MemeStoner::SpecialMove(MemeFighter& target)
 {
 	if (IsAlive())
 	{
 		if (Roll() > 3)
 		{
+			if (MemeFrog* pFrog = dynamic_cast<MemeFrog*>(&target))
+				std::cout << mName << " says: 'Oh sweet dude, it's a cool little froggie bro.'" << std::endl;
+			else if (MemeStoner* pStoner = dynamic_cast<MemeStoner*>(&target))
+				std::cout << mName << " says: 'Duuuuude.'" << std::endl;
+			else if (MemeCat* pCat = dynamic_cast<MemeCat*>(&target))
+				std::cout << mName << " says: 'Hey kitty bro, can I pet you?'" << std::endl;
+
 			std::cout << mName << " smokes the dank sticky icky, becoming Super " << mName << std::endl;
 			mName = "Super " + mName;
 			mAttributes.Speed += 3;
@@ -111,14 +118,14 @@ MemeFrog::MemeFrog(const std::string& name, Weapon* pWeapon)
 	: MemeFighter(name, 69, 7, 14, pWeapon)
 {}
 
-void MemeFrog::SpecialMove(MemeFighter& other)
+void MemeFrog::SpecialMove(MemeFighter& target)
 {
-	if (IsAlive() && other.IsAlive())
+	if (IsAlive() && target.IsAlive())
 	{
 		if (Roll() > 4)
 		{
-			std::cout << mName << " attacks " << other.GetName() << " with a rainbow beam!" << std::endl;
-			ApplyDamageTo(other, Roll(3) + 20);
+			std::cout << mName << " attacks " << target.GetName() << " with a rainbow beam!" << std::endl;
+			ApplyDamageTo(target, Roll(3) + 20);
 		}
 		else
 			std::cout << mName << " falls off his unicycle." << std::endl;
@@ -132,5 +139,24 @@ void MemeFrog::Tick()
 		std::cout << mName << " is hurt by the bad AIDS!" << std::endl;
 		ApplyDamageTo(*this, Roll());
 		MemeFighter::Tick();
+	}
+}
+
+MemeCat::MemeCat(const std::string& name, Weapon* pWeapon)
+	: MemeFighter(name, 65, 9, 14, pWeapon)
+{
+}
+
+void MemeCat::SpecialMove(MemeFighter& target)
+{
+	if (IsAlive())
+	{
+		if (Roll() > 2)
+		{
+			std::cout << mName << " eats a cheeseburger and gains 20 HP." << std::endl;
+			mAttributes.Hp += 20;
+		}
+		else
+			std::cout << mName << " meows demurely." << std::endl;
 	}
 }

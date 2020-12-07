@@ -41,13 +41,20 @@ class MemeStoner : public MemeFighter
 {
 public:
 	MemeStoner(const std::string& name, Weapon* pWeapon = nullptr);
-	void SpecialMove(MemeFighter&) override;
+	void SpecialMove(MemeFighter& target) override;
 };
 
 class MemeFrog : public MemeFighter
 {
 public:
 	MemeFrog(const std::string& name, Weapon* pWeapon = nullptr);
-	void SpecialMove(MemeFighter& other) override;
+	void SpecialMove(MemeFighter& target) override;
 	void Tick() override;
+};
+
+class MemeCat : public MemeFighter
+{
+public:
+	MemeCat(const std::string& name, Weapon* pWeapon = nullptr);
+	void SpecialMove(MemeFighter& target) override;
 };

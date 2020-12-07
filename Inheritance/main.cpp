@@ -63,10 +63,12 @@ int main()
 	std::vector<MemeFighter*> t1 = {
 		new MemeFrog("Dat Boi", new Fists),
 		new MemeStoner("Good Guy Greg", new Bat),
-		new MemeFrog("The WB Frog", new Knife)
+		new MemeFrog("The WB Frog", new Knife),
+		new MemeCat("Haz cheeseburger", new Knife)
 	};
 	std::vector<MemeFighter*> t2 = {
 		new MemeStoner("Chong", new Fists),
+		new MemeCat("NEDM", new Fists),
 		new MemeStoner("Scumbag Steve", new Bat),
 		new MemeFrog("Pepe", new Knife)
 	};
