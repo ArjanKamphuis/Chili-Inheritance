@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <conio.h>
 #include <iostream>
+#include <typeinfo>
 
 #include "Fighters.h"
 #include "Weapons.h"
@@ -47,6 +48,11 @@ void DoSpecials(MemeFighter& f1, MemeFighter& f2)
 	TakeWeaponIfDead(*p2, *p1);
 }
 
+bool AreSameType(MemeFighter& f1, MemeFighter& f2)
+{
+	return (typeid(f1) == typeid(f2));
+}
+
 template<typename T, class P>
 void shuffle_partition(std::vector<T>& vec, const P& pred)
 {
@@ -73,6 +79,10 @@ int main()
 		new MemeFrog("Pepe", new Knife)
 	};
 
+	std::cout << "=====================================" << std::endl;
+	std::cout << std::boolalpha << AreSameType(*t1[0], *t2[3]) << std::endl;
+	std::cout << std::boolalpha << AreSameType(*t1[0], *t2[0]) << std::endl;
+	std::cout << typeid(*t2[1]).name() << std::endl;
 	std::cout << "=====================================" << std::endl;
 
 	const auto alive_pred = [](MemeFighter* pf) { return pf->IsAlive(); };

@@ -96,11 +96,11 @@ void MemeStoner::SpecialMove(MemeFighter& target)
 	{
 		if (Roll() > 3)
 		{
-			if (MemeFrog* pFrog = dynamic_cast<MemeFrog*>(&target))
+			if (typeid(target) == typeid(MemeFrog))
 				std::cout << mName << " says: 'Oh sweet dude, it's a cool little froggie bro.'" << std::endl;
-			else if (MemeStoner* pStoner = dynamic_cast<MemeStoner*>(&target))
+			else if (typeid(target) == typeid(MemeStoner))
 				std::cout << mName << " says: 'Duuuuude.'" << std::endl;
-			else if (MemeCat* pCat = dynamic_cast<MemeCat*>(&target))
+			else if (typeid(target) == typeid(MemeCat))
 				std::cout << mName << " says: 'Hey kitty bro, can I pet you?'" << std::endl;
 
 			std::cout << mName << " smokes the dank sticky icky, becoming Super " << mName << std::endl;
